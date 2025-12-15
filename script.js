@@ -1,68 +1,76 @@
-// 定義 API 網址 (使用免費的 JSONPlaceholder)
 const apiUrl = 'https://jsonplaceholder.typicode.com/users';
-
-// 抓取畫面上的元素
 const listElement = document.getElementById('contactList');
 const addBtn = document.getElementById('addBtn');
 const nameInput = document.getElementById('nameInput');
+// 改成抓取 IG 輸入框
+const igInput = document.getElementById('igInput'); 
 
-// --- 功能 1: 使用 GET 讀取資料 (Ex03 Network requests) ---
 function loadContacts() {
     fetch(apiUrl)
-        .then(response => response.json()) // 把回傳的資料轉成 JSON
+        .then(response => response.json())
         .then(users => {
-            // 清空目前的清單
             listElement.innerHTML = '';
             
-            // 只抓前 5 筆資料來顯示 (模擬通訊錄)
-            // 運用陣列方法 forEach
+            // 我們把假資料的 username 當作 IG 帳號來顯示
             users.slice(0, 5).forEach(user => {
                 const li = document.createElement('li');
-                li.innerHTML = `<strong>${user.name}</strong><br>📞 ${user.phone}`;
+                
+                // --- 這裡改了！變成超連結 ---
+                // 使用 target="_blank" 讓它開新分頁
+                // 網址結構：https://www.instagram.com/帳號/
+                li.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span><strong>${user.name}</strong></span>
+                        <a href="https://www.instagram.com/${user.username}/" target="_blank" style="color: #E1306C; text-decoration: none; font-weight: bold;">
+                           @${user.username} 🔗
+                        </a>
+                    </div>
+                `;
                 listElement.appendChild(li);
             });
         })
-        .catch(error => {
-            console.error('下載失敗:', error);
-        });
+        .catch(error => console.error('下載失敗:', error));
 }
 
-// --- 功能 2: 使用 POST 新增資料 (Ex03 Network requests) ---
 addBtn.addEventListener('click', () => {
     const name = nameInput.value;
-    const phone = document.getElementById('phoneInput').value;
+    const igAccount = igInput.value; // 取得輸入的 IG
 
-    if(name === '') {
-        alert('請輸入姓名！');
+    if(name === '' || igAccount === '') {
+        alert('請輸入暱稱和 IG 帳號！');
         return;
     }
 
-    // 準備要傳送的資料物件
     const newContact = {
         name: name,
-        phone: phone,
-        username: "user_test"
+        username: igAccount, // 對應 API 的欄位
     };
 
-    // 發送 POST 請求
     fetch(apiUrl, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: JSON.stringify(newContact) // 把物件轉成 JSON 字串
+        headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+        body: JSON.stringify(newContact)
     })
     .then(response => response.json())
     .then(data => {
-        console.log('成功:', data);
-        alert(`新增成功！(模擬 ID: ${data.id})`);
+        alert(`發送成功！模擬 ID: ${data.id}`);
         
-        // 注意：因為是假 API，資料不會真的存進去，所以我們手動把它加到畫面上給使用者看
         const li = document.createElement('li');
-        li.innerHTML = `<strong>${name}</strong><br>📞 ${phone} <span style="color:red">(新)</span>`;
-        listElement.prepend(li); // 加在最上面
+        // --- 這裡也同步改成超連結 ---
+        li.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span><strong>${name}</strong></span>
+                <a href="https://www.instagram.com/${igAccount}/" target="_blank" style="color: red; text-decoration: none; font-weight: bold;">
+                    @${igAccount} (新) 🔗
+                </a>
+            </div>
+        `;
+        listElement.prepend(li);
+        
+        // 清空輸入框
+        nameInput.value = '';
+        igInput.value = '';
     });
 });
 
-// 網頁一打開就執行載入
 loadContacts();
