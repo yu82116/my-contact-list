@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雲端通訊錄</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <h2>📱 雲端通訊錄</h2>
+        
+        <div class="input-group">
+            <input type="text" id="nameInput" placeholder="請輸入姓名">
+            <input type="text" id="phoneInput" placeholder="請輸入電話">
+            <button id="addBtn">新增聯絡人 (POST)</button>
+        </div>
+
+        <hr>
+
+        <h3>聯絡人清單</h3>
+        <ul id="contactList">
+            <li>載入中...</li>
+        </ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
