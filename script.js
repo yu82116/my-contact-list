@@ -11,7 +11,7 @@ function loadContacts() {
         .then(users => {
             listElement.innerHTML = '';
             
-            // 可拿掉或擺著舉例測試用
+            // 舉例抓五個測試用
             users.slice(0, 5).forEach(user => {
                 const li = document.createElement('li');
                 
@@ -52,7 +52,7 @@ addBtn.addEventListener('click', () => {
     })
     .then(response => response.json())
     .then(data => {
-        alert(`發送成功！模擬 ID: ${data.id}`);
+        alert(`新增成功哩！ IG: ${data.id}`);
         
         // 假 API
         const li = document.createElement('li');
@@ -72,4 +72,5 @@ addBtn.addEventListener('click', () => {
 });
 
 loadContacts();
+
 
