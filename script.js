@@ -1,6 +1,5 @@
 const apiUrl = 'https://jsonplaceholder.typicode.com/users';
-// 之後有串正式 API 再替換網址
-
+// 之後有串API再替換網址
 const listElement = document.getElementById('contactList');
 const addBtn = document.getElementById('addBtn');
 const nameInput = document.getElementById('nameInput');
@@ -8,13 +7,11 @@ const igInput = document.getElementById('igInput');
 const countText = document.getElementById('countText');
 const statusText = document.getElementById('statusText');
 
-// 更新加入人數
 function updateCount() {
     const count = listElement.children.length;
     countText.textContent = `目前已有 ${count} 位同學加入 IG 追蹤清單`;
 }
 
-// 載入既有資料（模擬伺服器資料）
 function loadContacts() {
     statusText.textContent = '同步中...';
 
@@ -23,7 +20,7 @@ function loadContacts() {
         .then(users => {
             listElement.innerHTML = '';
 
-            // 取前 5 筆當示範
+            // 目前暫取5筆日後亦可拿掉該功能
             users.slice(0, 5).forEach(user => {
                 const li = document.createElement('li');
                 li.innerHTML = `
@@ -48,7 +45,6 @@ function loadContacts() {
         });
 }
 
-// 新增聯絡人（加入班級）
 addBtn.addEventListener('click', () => {
     const name = nameInput.value.trim();
     const igAccount = igInput.value.trim();
@@ -90,7 +86,7 @@ addBtn.addEventListener('click', () => {
             updateCount();
             statusText.textContent = '已同步至伺服器';
 
-            alert('你已加入班級 IG 追蹤清單 🎉');
+            alert('你已加入班級 IG 追蹤清單哩!');
 
             nameInput.value = '';
             igInput.value = '';
@@ -103,3 +99,4 @@ addBtn.addEventListener('click', () => {
 
 // 初始化
 loadContacts();
+
